@@ -13,8 +13,9 @@ public class TravelSalesman implements Mutable{
 
     List<Gene> genotype = new ArrayList<>();
 
-    public TravelSalesman setGenotype(List<Gene> genotype) {
-        this.genotype = genotype;
+    @Override
+    public Mutable setGenotype(List<Gene> genotype) {
+        this.genotype=genotype;
         return this;
     }
 

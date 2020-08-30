@@ -7,4 +7,6 @@ public interface Mutable {
     List<Gene> getGenotype();
 
     int getGenomeLength();
+
+    Mutable setGenotype(List<Gene> genotype);
 }
