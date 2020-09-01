@@ -19,6 +19,6 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
         <!-- Names the annotated entity class -->
-<!--        <mapping class="Movie"/>-->
+        <mapping class="model.TravelSalesman"/>
     </session-factory>
 </hibernate-configuration>

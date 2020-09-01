@@ -22,14 +22,6 @@ public class City implements Gene {
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public double distance(City city){
-        return distances.get(city);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
