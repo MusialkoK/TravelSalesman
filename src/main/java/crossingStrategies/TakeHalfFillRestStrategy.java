@@ -27,7 +27,7 @@ public class TakeHalfFillRestStrategy implements CrossingStrategy {
         parent1Genotype.stream().limit(lastGeneToTake).forEach(offspringGenotype::add);
         parent2Genotype.stream().filter(g->!offspringGenotype.contains(g)).forEach(offspringGenotype::add);
 
-        return new TravelSalesman().setGenotype(offspringGenotype);
+        return new TravelSalesman(offspringGenotype);
     }
 
 }

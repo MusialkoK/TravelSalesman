@@ -1,17 +1,32 @@
 package model;
 
+import lombok.Setter;
 
-
-
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-
+@Entity(name = "travelers")
 public class TravelSalesman implements Mutable{
 
-    List<Gene> genotype = new ArrayList<>();
+    @Id
+    @GeneratedValue
+    private long id;
+
+    @Column
+    @Setter
+    private int generationNumber;
+
+    @ManyToMany
+    private final List<Mutable> parents = new ArrayList<>();
+
+    @ManyToMany
+    private List<Gene> genotype = new ArrayList<>();
+
+    public TravelSalesman(List<Gene> genotype) {
+        this.genotype = genotype;
+    }
 
     @Override
     public Mutable setGenotype(List<Gene> genotype) {
