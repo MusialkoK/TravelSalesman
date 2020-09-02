@@ -20,5 +20,7 @@
         <property name="hbm2ddl.auto">update</property>
         <!-- Names the annotated entity class -->
         <mapping class="model.TravelSalesman"/>
+        <mapping class="model.City"/>
+        <mapping class="model.CityDistance"/>
     </session-factory>
 </hibernate-configuration>

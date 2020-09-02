@@ -19,7 +19,7 @@ public class TakeHalfFillRestStrategy implements CrossingStrategy {
     }
 
     @Override
-    public Mutable cross(Mutable parent1, Mutable parent2) {
+    public TravelSalesman cross(Mutable parent1, Mutable parent2) {
         parent1Genotype = parent1.getGenotype();
         parent2Genotype = parent2.getGenotype();
 
