@@ -5,11 +5,16 @@ import org.hibernate.Session;
 import model.City;
 import model.CityDistance;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CityDistanceService {
 
     @Setter
-    private Session session;
+    private static Session session;
 
     public void putDistanceToDB(City origin, City destination, double distance) {
 
@@ -29,4 +34,26 @@ public class CityDistanceService {
         transaction.commit();
     }
 
+    public Double getDistanceBetween(City origin, City destination){
+        return origin.getDistancesMap().get(destination);
+    }
+
+    public CityDistance getDistanceFromDB(City origin, City destination){
+        String findQuery = "from distances d where d.originCity = :cityOrigin and d.destinationCity = :cityDestination";
+        Query<CityDistance> query = session.createQuery(findQuery);
+        query.setParameter("cityOrigin", origin);
+        query.setParameter("cityDestination", destination);
+        return query.getSingleResult();
+    }
+
+    public Map<City, Double> distancesMapFrom(City city) {
+        String findQuery = "from distances d where d.originCity = :city";
+        Map<City,Double> result = new HashMap<>();
+        Query<CityDistance> query = session.createQuery(findQuery);
+        query.setParameter("city", city);
+
+        List<CityDistance> distanceList = query.getResultList();
+        distanceList.forEach(d-> result.put(d.getDestinationCity(),d.getDistance()));
+        return result;
+    }
 }
