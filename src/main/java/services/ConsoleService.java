@@ -2,8 +2,8 @@ package services;
 
 
 import model.City;
+import model.TravelSalesman;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -14,32 +14,40 @@ public class ConsoleService {
 
     private final String CITY_LIST_FORMAT = "%d: %s\n";
 
-    public List<City> askForGenes(List<City> genes) {
+    public List<City> askForOperatingCities() {
+        List<City> genes = CityService.getFullCityList();
         Scanner sc = new Scanner(System.in);
         displayCityList(genes);
+        System.out.println("A: All cities");
         System.out.println("Choose cities through which to travel [x,x,x ...]:");
 
-        List<Long> integerList = Arrays
-                .stream(sc.nextLine().split(","))
-                .map(Long::valueOf).collect(Collectors.toList());
+        String line = sc.nextLine();
+        if(line.equals("A")) return genes;
 
-        return genes.stream().filter(c->integerList.contains(c.getId())).collect(Collectors.toList());
+        List<Long> integerList = Arrays
+                .stream(line.split(","))
+                .map(Long::valueOf).collect(Collectors.toList());
+        return genes.stream().filter(c -> integerList.contains(c.getId())).collect(Collectors.toList());
     }
 
-    public City askForStartCity(List<City> list){
+    public City askForStartCity() {
+        List<City> list = CityService.getOperatingCityList();
         Scanner sc = new Scanner(System.in);
         displayCityList(list);
         System.out.println("Choose start city [x]:");
         Long intCity = sc.nextLong();
+        return list.stream().findFirst().filter(c -> c.getId().equals(intCity)).get();
 
-        return list.stream().findFirst().filter(c-> c.getId().equals(intCity)).get();
 
     }
 
-    private void displayCityList(List<City> cityList) {
+    public void displayCityList(List<City> cityList) {
         AtomicInteger integer = new AtomicInteger(1);
         cityList.forEach(c -> System.out.printf(CITY_LIST_FORMAT, integer.getAndIncrement(), c.getName()));
     }
 
+    public void displayTravelersList(List<TravelSalesman> travelSalesmanList) {
+        travelSalesmanList.forEach(System.out::println);
+    }
 
 }

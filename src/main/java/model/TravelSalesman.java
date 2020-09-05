@@ -2,18 +2,18 @@ package model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ToString
 @Entity(name = "travelers")
 @Getter
 @Setter
-public class TravelSalesman implements Mutable{
+@Accessors(chain = true)
+public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
 
     @Transient
     private Phenotype phenotype;
@@ -32,10 +32,10 @@ public class TravelSalesman implements Mutable{
     @ManyToMany
     private List<City> genotype;
 
-    private double fitnessValue;
+    private Double fitnessValue;
 
     public TravelSalesman(List<Gene> genotype) {
-        this.genotype = genotype.stream().map(g->(City) g).collect(Collectors.toList());
+        this.genotype = genotype.stream().map(g -> (City) g).collect(Collectors.toList());
         phenotype = new MinimumPhenotype().setGenotype(this.genotype);
         fitnessValue = (double) phenotype.fitness();
     }
@@ -47,11 +47,24 @@ public class TravelSalesman implements Mutable{
 
     @Override
     public Mutable setGenotype(List<Gene> genotype) {
-        this.genotype=genotype.stream().map(g->(City) g).collect(Collectors.toList());
+        this.genotype = genotype.stream().map(g -> (City) g).collect(Collectors.toList());
         return this;
     }
+
     @Override
-    public List<Gene> getGenotype(){
-        return genotype.stream().map(g-> (Gene) g).collect(Collectors.toList());
+    public List<Gene> getGenotype() {
+        return genotype.stream().map(g -> (Gene) g).collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + id +
+                " Route: " + genotype.toString() +
+                " Length: " + fitnessValue;
+    }
+
+    @Override
+    public int compareTo(TravelSalesman o) {
+        return this.fitnessValue.compareTo(o.fitnessValue);
     }
 }

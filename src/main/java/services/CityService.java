@@ -1,10 +1,10 @@
 package services;
 
+import lombok.Getter;
 import lombok.Setter;
 import model.City;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import org.hibernate.query.Query;
 
 import java.util.Arrays;
@@ -14,9 +14,16 @@ public class CityService {
 
     @Setter
     private static Session session;
+    @Getter
+    private static List<City> fullCityList;
+    @Getter
+    @Setter
+    private static List<City> operatingCityList;
+    @Setter
+    private static City startCity;
 
-    public static City getCityByID(List<City> list, int index){
-        return (City) list.stream().filter(c->c.getId()==index).limit(1);
+    public static City getCityByID(List<City> list, int index) {
+        return (City) list.stream().filter(c -> c.getId() == index).limit(1);
     }
 
     public void addToDB(City city) {
@@ -44,9 +51,9 @@ public class CityService {
         return query.getSingleResult();
     }
 
-    public List<City> getCities(){
+    public void setFullCityList() {
         String findQuery = "from cities";
         Query<City> query = session.createQuery(findQuery);
-        return query.getResultList();
+        fullCityList = query.getResultList();
     }
 }
