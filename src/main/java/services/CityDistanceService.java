@@ -34,8 +34,20 @@ public class CityDistanceService {
         transaction.commit();
     }
 
+    public void putDistanceToDB (List<CityDistance> listOfDistances ){
+        Transaction transaction = session.beginTransaction();
+        for (CityDistance cd:listOfDistances
+             ) {
+            session.saveOrUpdate(cd);
+        }
+        transaction.commit();
+
+
+    }
+
+
     public Double getDistanceBetween(City origin, City destination){
-        return origin.getDistancesMap().get(destination);
+        return origin.getDistances().get(destination);
     }
 
     public CityDistance getDistanceFromDB(City origin, City destination){
@@ -56,4 +68,6 @@ public class CityDistanceService {
         distanceList.forEach(d-> result.put(d.getDestinationCity(),d.getDistance()));
         return result;
     }
+
+
 }

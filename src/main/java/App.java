@@ -1,7 +1,3 @@
-import model.City;
-import model.CityDistance;
-import model.Mutable;
-import model.TravelSalesman;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -9,11 +5,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import services.CityDistanceService;
 import services.CityService;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import services.ImportDatabaseService;
 
 
 public class App {
@@ -41,6 +33,8 @@ public class App {
 //        }
 
 
+
+
         final StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder().configure().build();
 
         try (SessionFactory sessionFactory = new MetadataSources(standardServiceRegistry).buildMetadata().buildSessionFactory()) {
@@ -51,12 +45,10 @@ public class App {
             CityDistanceService cityDistanceService = new CityDistanceService();
             CityService cityService = new CityService();
 
-            City warszawa = cityService.getCityBy("Warszawa");
-            City krakow = cityService.getCityBy("Kraków");
-            CityDistance cityDistance = cityDistanceService.getDistanceFromDB(warszawa,krakow);
-            System.out.println(cityDistance);
+            ImportDatabaseService importDatabaseService = new ImportDatabaseService();
+            importDatabaseService.addCitiesFromFile();
 
-            System.out.println(warszawa);
+
 
 
         } catch (Exception e) {

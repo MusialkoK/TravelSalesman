@@ -2,11 +2,8 @@ package model;
 
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
-import services.CityDistanceService;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -17,8 +14,6 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity(name = "cities")
-@NoArgsConstructor
-@ToString
 public class City implements Gene {
 
     @Id
@@ -29,22 +24,22 @@ public class City implements Gene {
     private String name;
 
     @Transient
-    private Map<City, Double> distancesMap = new HashMap<>();
+    private Map<City, Double> distances = new HashMap<>();
 
     public City(String name) {
         this.name = name;
     }
 
     public City assignDistances(City city, double distance) {
-        this.distancesMap.put(city, distance);
-        city.getDistancesMap().put(this, distance);
+        this.distances.put(city, distance);
+        city.distances.put(this, distance);
         return this;
     }
-//    @PostLoad
-//    private void loadDistancesMap(){
-//        CityDistanceService cityDistanceService = new CityDistanceService();
-//        distancesMap=cityDistanceService.distancesMapFrom(this);
-//    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 
     @Override
     public boolean equals(Object o) {

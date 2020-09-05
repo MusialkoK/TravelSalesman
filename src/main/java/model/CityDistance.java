@@ -27,4 +27,10 @@ public class CityDistance {
     private City destinationCity;
 
     private double distance;
+
+    public CityDistance(City originCity, City destinationCity, double distance) {
+        this.originCity = originCity;
+        this.destinationCity = destinationCity;
+        this.distance = distance;
+    }
 }
