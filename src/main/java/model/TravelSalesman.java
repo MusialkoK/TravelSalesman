@@ -13,7 +13,10 @@ import java.util.stream.Collectors;
 @Entity(name = "travelers")
 @Getter
 @Setter
-public class TravelSalesman implements Mutable {
+public class TravelSalesman implements Mutable, Phenotype{
+
+    @Transient
+    private Phenotype phenotype;
 
     @Id
     @GeneratedValue
@@ -31,6 +34,8 @@ public class TravelSalesman implements Mutable {
 
     public TravelSalesman(List<Gene> genotype) {
         this.genotype = genotype.stream().map(g->(City) g).collect(Collectors.toList());
+        phenotype = new MinimumPhenotype().setGenotype(this.genotype);
+
     }
 
     @Override
@@ -48,4 +53,8 @@ public class TravelSalesman implements Mutable {
         return genotype.stream().map(g-> (Gene) g).collect(Collectors.toList());
     }
 
+    @Override
+    public Comparable fitness() {
+        return phenotype.fitness();
+    }
 }

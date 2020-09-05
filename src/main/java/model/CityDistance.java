@@ -1,7 +1,9 @@
 package model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @Getter
 @Setter
+@NoArgsConstructor
+@ToString
 public class CityDistance {
 
     @Id
