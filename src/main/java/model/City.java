@@ -1,58 +1,56 @@
 package model;
 
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import javax.persistence.*;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class City {
-    private  String cityName;
-    private int id;
+@Accessors(chain = true)
+@Setter
+@Getter
+@Entity(name = "cities")
+public class City implements Gene {
 
-    private Map<City, Integer > distances = new LinkedHashMap<>();
+    @Id
+    @GeneratedValue
+    private Long id;
 
+    @Column
+    private String name;
 
+    @Transient
+    private Map<City, Double> distances = new HashMap<>();
 
-
-    public Integer getDistanceTo(int index) {
-        return getDistances().get(index);
+    public City(String name) {
+        this.name = name;
     }
 
-    public Map<City, Integer> getDistances() {
-        return distances;
+    public City assignDistances(City city, double distance) {
+        this.distances.put(city, distance);
+        city.getDistances().put(this, distance);
+        return this;
     }
 
-    public void setDistances(City city, Integer distance) {
-        distances.put(city, distance);
-
+    @Override
+    public String toString() {
+        return name;
     }
 
-    public String getCityName() {
-        return cityName;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        City city = (City) o;
+        return Objects.equals(name, city.name);
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
-    public City(String cityName, int id) {
-        this.cityName = cityName;
-        this.id = id;
-
-    }
-
-    public static void main(String[] args) {
-        City c1 = new City("koko", 9);
-
-    }
-
-
 }
