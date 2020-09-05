@@ -24,6 +24,7 @@ public class CityService {
     public void addToDB(List<City> cities) {
         Transaction transaction = session.beginTransaction();
         cities.forEach(session::saveOrUpdate);
+
         transaction.commit();
     }
 

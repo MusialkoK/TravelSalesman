@@ -21,31 +21,40 @@ public class ImportDatabaseService {
     public void addCitiesFromFile() throws IOException {
         String line = "";
         String splitBy = ",";
+        Long id = 1L;
 
-            while ((line = reader.readLine()) != null) {
+        CityService cityService = new CityService();
+        while ((line = reader.readLine()) != null) {
                 String[] cityInfo = line.split(splitBy);
                 City originCity = new City(cityInfo[0]);
                 City destinationCity = new City(cityInfo[1]);
                 double distance = Double.parseDouble(cityInfo[2]);
 
+
                     if (!listOfCities.contains(originCity)) {
                         listOfCities.add(originCity);
                     }
-
-                    if(!listOfCities.contains(destinationCity)) {
+                    if (!listOfCities.contains(destinationCity)) {
                         listOfCities.add(destinationCity);
                     }
 
-                CityDistance cityDistance = new CityDistance(originCity, destinationCity, distance);
+                CityDistance cityDistance = new CityDistance(originCity, destinationCity, distance, id);
                     listOfDistances.add(cityDistance);
+                    id = id+1;
 
-                CityService cityService = new CityService();
-                CityDistanceService cityDistanceService = new CityDistanceService();
 
-                cityService.addToDB(listOfCities);
-                cityDistanceService.putDistanceToDB(listOfDistances);
             }
+
+
+        CityDistanceService cityDistanceService = new CityDistanceService();
+
+        cityService.addToDB(listOfCities);
+        cityDistanceService.putDistanceToDB(listOfDistances);
+
+
+
         }
+
 
 
     public ImportDatabaseService() throws FileNotFoundException {

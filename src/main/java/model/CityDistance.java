@@ -17,18 +17,19 @@ import javax.persistence.*;
 public class CityDistance {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private Long distanceId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private City originCity;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private City destinationCity;
 
     private double distance;
 
-    public CityDistance(City originCity, City destinationCity, double distance) {
+    public CityDistance(City originCity, City destinationCity, double distance, Long id) {
+        this.distanceId = id;
         this.originCity = originCity;
         this.destinationCity = destinationCity;
         this.distance = distance;
