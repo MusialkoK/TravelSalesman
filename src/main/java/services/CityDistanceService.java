@@ -1,20 +1,24 @@
 package services;
 
 import lombok.Setter;
-import org.hibernate.Session;
 import model.City;
 import model.CityDistance;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CityDistanceService {
 
     @Setter
     private static Session session;
+
+    private static List<CityDistance> distanceList = new ArrayList<>();
 
     public void putDistanceToDB(City origin, City destination, double distance) {
 
@@ -34,26 +38,32 @@ public class CityDistanceService {
         transaction.commit();
     }
 
-    public Double getDistanceBetween(City origin, City destination){
+    public Double getDistanceBetween(City origin, City destination) {
         return origin.getDistancesMap().get(destination);
     }
 
-    public CityDistance getDistanceFromDB(City origin, City destination){
-        String findQuery = "from distances d where d.originCity = :cityOrigin and d.destinationCity = :cityDestination";
-        Query<CityDistance> query = session.createQuery(findQuery);
-        query.setParameter("cityOrigin", origin);
-        query.setParameter("cityDestination", destination);
-        return query.getSingleResult();
+    public CityDistance getDistanceFromDB(City origin, City destination) {
+        List<CityDistance> result = distanceList.stream()
+                .filter(distance -> distance.getOriginCity() == origin && distance.getDestinationCity() == destination)
+                .collect(Collectors.toList());
+        return result.get(0);
     }
 
-    public Map<City, Double> distancesMapFrom(City city) {
-        String findQuery = "from distances d where d.originCity = :city";
-        Map<City,Double> result = new HashMap<>();
-        Query<CityDistance> query = session.createQuery(findQuery);
-        query.setParameter("city", city);
+    public void assignDistancesToCities() {
+        CityService.getOperatingCityList().forEach(c -> c.setDistancesMap(distancesMapFrom(c)));
+    }
 
-        List<CityDistance> distanceList = query.getResultList();
-        distanceList.forEach(d-> result.put(d.getDestinationCity(),d.getDistance()));
+    public void getCityDistances() {
+        String findQuery = "from distances d";
+        Query<CityDistance> query = session.createQuery(findQuery);
+        distanceList = query.getResultList();
+    }
+
+    private Map<City, Double> distancesMapFrom(City city) {
+        List<CityDistance> mapEntry = distanceList.stream().filter(distance -> distance.getOriginCity() == city).collect(Collectors.toList());
+        Map<City, Double> result = new HashMap<>();
+        mapEntry.forEach(d -> result.put(d.getDestinationCity(), d.getDistance()));
         return result;
     }
+
 }

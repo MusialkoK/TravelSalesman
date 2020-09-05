@@ -4,9 +4,7 @@ package model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
-import services.CityDistanceService;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -18,7 +16,6 @@ import java.util.Objects;
 @Getter
 @Entity(name = "cities")
 @NoArgsConstructor
-@ToString
 public class City implements Gene {
 
     @Id
@@ -40,11 +37,6 @@ public class City implements Gene {
         city.getDistancesMap().put(this, distance);
         return this;
     }
-//    @PostLoad
-//    private void loadDistancesMap(){
-//        CityDistanceService cityDistanceService = new CityDistanceService();
-//        distancesMap=cityDistanceService.distancesMapFrom(this);
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -57,5 +49,10 @@ public class City implements Gene {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
