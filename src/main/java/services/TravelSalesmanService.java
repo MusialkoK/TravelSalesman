@@ -1,6 +1,6 @@
 package services;
 
-import lombok.Setter;
+import lombok.Getter;
 import model.City;
 import model.Gene;
 import model.TravelSalesman;
@@ -10,14 +10,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class TravelSalesmanService {
-
-    private int generationAbundance = 100;
-    private int numberOfGenerations = 200;
-    private int numberOfReproducers = 20;
-    private double mutatingChance = 0.02;
-
-
-
+    @Getter
+    private static int generationAbundance = 100;
+    @Getter
+    private static int numberOfGenerations = 200;
+    @Getter
+    private static int numberOfReproducers = 20;
+    @Getter
+    private static double mutatingChance = 0.02;
 
 
     public List<TravelSalesman> createFirstGeneration() {

@@ -44,8 +44,8 @@ public class App {
             CityDistanceService cityDistanceService = new CityDistanceService();
             CityService cityService = new CityService();
 
-            ImportDatabaseService importDatabaseService = new ImportDatabaseService();
-            importDatabaseService.addCitiesFromFile();
+
+
 
 
 

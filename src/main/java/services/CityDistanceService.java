@@ -38,6 +38,12 @@ public class CityDistanceService {
         transaction.commit();
     }
 
+    public void putDistanceToDB(List<CityDistance> list){
+        Transaction transaction = session.beginTransaction();
+        list.forEach(session::saveOrUpdate);
+        transaction.commit();
+    }
+
     public Double getDistanceBetween(City origin, City destination) {
         return origin.getDistancesMap().get(destination);
     }
