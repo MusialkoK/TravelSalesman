@@ -15,6 +15,10 @@ public class CityService {
     @Setter
     private static Session session;
 
+    public static City getCityByID(List<City> list, int index){
+        return (City) list.stream().filter(c->c.getId()==index).limit(1);
+    }
+
     public void addToDB(City city) {
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(city);
@@ -38,7 +42,11 @@ public class CityService {
         Query<City> query = session.createQuery(findQuery);
         query.setParameter("name", name);
         return query.getSingleResult();
+    }
 
-
+    public List<City> getCities(){
+        String findQuery = "from cities";
+        Query<City> query = session.createQuery(findQuery);
+        return query.getResultList();
     }
 }

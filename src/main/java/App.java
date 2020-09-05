@@ -9,6 +9,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import services.CityDistanceService;
 import services.CityService;
+import services.ConsoleService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,13 +51,13 @@ public class App {
 
             CityDistanceService cityDistanceService = new CityDistanceService();
             CityService cityService = new CityService();
+            ConsoleService consoleService = new ConsoleService();
+            List<City> cityList = consoleService.askForGenes(cityService.getCities());
+            System.out.println(consoleService.askForStartCity(cityList));
 
-            City warszawa = cityService.getCityBy("Warszawa");
-            City krakow = cityService.getCityBy("Kraków");
-            CityDistance cityDistance = cityDistanceService.getDistanceFromDB(warszawa,krakow);
-            System.out.println(cityDistance);
 
-            System.out.println(warszawa);
+
+
 
 
         } catch (Exception e) {
