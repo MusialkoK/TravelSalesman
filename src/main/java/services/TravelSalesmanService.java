@@ -7,6 +7,7 @@ import lombok.Setter;
 import model.City;
 import model.Gene;
 import model.TravelSalesman;
+import model.TwoRandoms;
 import mutatingStrategies.MutatingStrategy;
 import mutatingStrategies.SwapMutateStrategy;
 import org.hibernate.Session;
@@ -15,7 +16,6 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class TravelSalesmanService {
@@ -39,7 +39,7 @@ public class TravelSalesmanService {
     @Setter
     private MutatingStrategy mutatingStrategy;
 
-    private final TwoRandoms twoRandoms = new TwoRandoms();
+
 
     private int generationCounter = 0;
     private int individualCounter = 0;
@@ -67,12 +67,13 @@ public class TravelSalesmanService {
     }
 
     public List<TravelSalesman> createNextGeneration(List<TravelSalesman> breeders) {
+        TwoRandoms twoRandoms = new TwoRandoms(numberOfReproducers,true);
         generationCounter++;
         List<TravelSalesman> offspring = new ArrayList<>();
         for (int i = 0; i < generationAbundance-numberOfReproducers; i++) {
-            twoRandoms.createRandoms();
-            TravelSalesman parent1 = breeders.get(twoRandoms.firstRandom);
-            TravelSalesman parent2 = breeders.get(twoRandoms.secondRandom);
+            TravelSalesman parent1 = breeders.get(twoRandoms.getFirstRandom());
+            TravelSalesman parent2 = breeders.get(twoRandoms.getSecondRandom());
+            twoRandoms.reset();
             TravelSalesman child = (TravelSalesman) crossingStrategy.cross(parent1, parent2);
             mutatingStrategy.mutate(child);
             child.setGenerationNumber(generationCounter)
@@ -132,21 +133,4 @@ public class TravelSalesmanService {
         return list.stream().mapToDouble(TravelSalesman::getFitnessValue).min().orElse(-1.0);
     }
 
-    private static class TwoRandoms {
-        private int firstRandom;
-        private int secondRandom;
-
-        public TwoRandoms() {
-            createRandoms();
-        }
-
-        public void createRandoms() {
-            Random random = new Random();
-            int range = numberOfReproducers;
-            firstRandom = random.nextInt(range);
-            do {
-                secondRandom = random.nextInt(range);
-            } while (firstRandom == secondRandom);
-        }
-    }
 }

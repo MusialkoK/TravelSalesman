@@ -2,6 +2,7 @@ package mutatingStrategies;
 
 import model.Gene;
 import model.Mutable;
+import model.TwoRandoms;
 import services.TravelSalesmanService;
 
 import java.util.Collections;
@@ -14,17 +15,14 @@ public class SwapMutateStrategy implements MutatingStrategy {
     @Override
     public Mutable mutate(Mutable obj) {
         this.genotype = obj.getGenotype();
+        TwoRandoms twoRandoms = new TwoRandoms(genotype.size(), false);
         Random random = new Random();
         double mutationRate = random.nextDouble();
         if (mutationRate < TravelSalesmanService.getMutatingChance()) {
-            int mutateFrom = random.nextInt(genotype.size());
-            int mutateInto = random.nextInt(genotype.size());
-            do {
-                if (mutateFrom != mutateInto && mutateFrom != 0) {
-                    Collections.swap(genotype, mutateFrom, mutateInto);
-                    break;
-                }
-            } while (true);
+            int mutateFrom = twoRandoms.getFirstRandom();
+            int mutateInto = twoRandoms.getSecondRandom();
+            Collections.swap(genotype, mutateFrom, mutateInto);
+            twoRandoms.reset();
         }
 
         return obj.setGenotype(genotype);
