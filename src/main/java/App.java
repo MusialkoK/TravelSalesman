@@ -1,25 +1,18 @@
-import crossingStrategies.TakeHalfFillRestStrategy;
-import model.City;
-import model.TravelSalesman;
-import mutatingStrategies.SwapMutateStrategy;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import services.*;
-
-import java.util.List;
+import services.CityDistanceService;
+import services.CityService;
+import services.ImportDatabaseService;
+import services.TravelSalesmanService;
 
 
 public class App {
 
 
     public static void main(String[] args) {
-
-        CityService cityService = new CityService();
-        CityDistanceService cityDistanceService = new CityDistanceService();
-        ConsoleService consoleService = new ConsoleService();
         TravelSalesmanService travelSalesmanService = new TravelSalesmanService();
 
 
@@ -29,25 +22,7 @@ public class App {
             Session session = sessionFactory.openSession();
             setUpServices(session);
 //            makeImport();
-
-            cityService.setFullCityList();
-            CityService.setOperatingCityList(consoleService.askForOperatingCities());
-            CityService.setStartCity(consoleService.askForStartCity());
-            cityDistanceService.getCityDistances();
-            cityDistanceService.assignDistancesToCities();
-            travelSalesmanService.setMutatingStrategy(new SwapMutateStrategy());
-
-            List<TravelSalesman> currentGeneration = travelSalesmanService.createFirstGeneration();
-
-            travelSalesmanService.setCrossingStrategy(new TakeHalfFillRestStrategy(currentGeneration.get(0)));
-
-            consoleService.displayTravelersList(currentGeneration);
-            currentGeneration=travelSalesmanService.killWeakTravelers(currentGeneration);
-            consoleService.displayTravelersList(currentGeneration);
-            currentGeneration=travelSalesmanService.createNextGeneration(currentGeneration);
-            consoleService.displayTravelersList(currentGeneration);
-
-
+            travelSalesmanService.makeAnalysis();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -19,7 +19,7 @@ public class MinimumPhenotype implements Phenotype {
         for (int i = 0; i < genotype.size(); i++) {
             distances.add(cityDistanceService.getDistanceBetween(genotype.get(i), genotype.get((i + 1) % genotype.size())));
         }
-        return distances.stream().reduce(0.0, Double::sum);
+        return distances.stream().mapToDouble(d->d).sum();
     }
 
 }

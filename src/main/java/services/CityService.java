@@ -21,6 +21,7 @@ public class CityService {
     @Setter
     private static List<City> operatingCityList;
     @Setter
+    @Getter
     private static City startCity;
 
     public static City getCityByID(List<City> list, int index) {

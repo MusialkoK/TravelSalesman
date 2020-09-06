@@ -20,7 +20,7 @@ public class SwapMutateStrategy implements MutatingStrategy {
             int mutateFrom = random.nextInt(genotype.size());
             int mutateInto = random.nextInt(genotype.size());
             do {
-                if (mutateFrom != mutateInto) {
+                if (mutateFrom != mutateInto && mutateFrom != 0) {
                     Collections.swap(genotype, mutateFrom, mutateInto);
                     break;
                 }

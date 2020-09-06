@@ -54,4 +54,8 @@ public class ConsoleService {
         System.out.println();
     }
 
+    public void generationCreatedMsg(int generationNumber, double bestFitness){
+        System.out.println(generationNumber+". generation created. Shortest route: "+bestFitness);
+    }
+
 }
