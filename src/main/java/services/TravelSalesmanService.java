@@ -7,6 +7,8 @@ import model.City;
 import model.Gene;
 import model.TravelSalesman;
 import mutatingStrategies.MutatingStrategy;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,12 +17,15 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class TravelSalesmanService {
+    @Setter
+    private static Session session;
+
     @Getter
     @Setter
     private static int generationAbundance = 100;
     @Getter
     @Setter
-    private static int numberOfGenerations = 200;
+    private static int numberOfGenerations = 20;
     @Getter
     @Setter
     private static int numberOfReproducers = 20;
@@ -46,6 +51,7 @@ public class TravelSalesmanService {
                     .setId(individualCounter++));
         }
         generationCounter++;
+        saveTravelSalesmenListToDB(result);
         return result;
     }
 
@@ -66,10 +72,16 @@ public class TravelSalesmanService {
                     .setId(individualCounter++);
             offspring.add(child);
         }
+        saveTravelSalesmenListToDB(offspring);
         List<TravelSalesman> newGeneration = new ArrayList<>(breeders);
-        newGeneration.addAll(offspring);
         generationCounter++;
         return newGeneration;
+    }
+
+    public void saveTravelSalesmenListToDB(List<TravelSalesman> travelSalesmanList){
+        Transaction transaction = session.beginTransaction();
+        travelSalesmanList.forEach(session::saveOrUpdate);
+        transaction.commit();
     }
 
     private List<Gene> getIndividualGenome(List<City> genePool) {

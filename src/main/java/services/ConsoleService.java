@@ -41,7 +41,6 @@ public class ConsoleService {
                 return c;
             }
         }
-        //return list.stream().findFirst().filter(c -> c.getId().equals(intCity)).get();
         return null;
     }
 

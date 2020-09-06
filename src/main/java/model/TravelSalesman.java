@@ -21,7 +21,7 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
     private Phenotype phenotype;
 
     @Id
-    @GeneratedValue
+    //@GeneratedValue
     private long id;
 
 

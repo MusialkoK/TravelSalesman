@@ -57,6 +57,7 @@ public class App {
     public static void setUpServices(Session session) {
         CityDistanceService.setSession(session);
         CityService.setSession(session);
+        TravelSalesmanService.setSession(session);
     }
 
     public static void makeImport() {
