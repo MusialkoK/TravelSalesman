@@ -66,7 +66,7 @@ public class CityDistanceService {
     }
 
     private Map<City, Double> distancesMapFrom(City city) {
-        List<CityDistance> mapEntry = distanceList.stream().filter(distance -> distance.getOriginCity() == city).collect(Collectors.toList());
+        List<CityDistance> mapEntry = distanceList.stream().filter(distance -> distance.getOriginCity().equals(city)).collect(Collectors.toList());
         Map<City, Double> result = new HashMap<>();
         mapEntry.forEach(d -> result.put(d.getDestinationCity(), d.getDistance()));
         return result;

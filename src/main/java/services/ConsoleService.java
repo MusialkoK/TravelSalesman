@@ -36,9 +36,13 @@ public class ConsoleService {
         displayCityList(list);
         System.out.println("Choose start city [x]:");
         Long intCity = sc.nextLong();
-        return list.stream().findFirst().filter(c -> c.getId().equals(intCity)).get();
-
-
+        for (City c:list) {
+            if(c.getId().equals(intCity)){
+                return c;
+            }
+        }
+        //return list.stream().findFirst().filter(c -> c.getId().equals(intCity)).get();
+        return null;
     }
 
     public void displayCityList(List<City> cityList) {
@@ -48,6 +52,7 @@ public class ConsoleService {
 
     public void displayTravelersList(List<TravelSalesman> travelSalesmanList) {
         travelSalesmanList.forEach(System.out::println);
+        System.out.println();
     }
 
 }

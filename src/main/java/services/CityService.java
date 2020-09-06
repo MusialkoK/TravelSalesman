@@ -15,6 +15,7 @@ public class CityService {
     @Setter
     private static Session session;
     @Getter
+    @Setter
     private static List<City> fullCityList;
     @Getter
     @Setter

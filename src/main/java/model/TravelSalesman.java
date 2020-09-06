@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Accessors(chain = true)
+@NoArgsConstructor
 public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
 
     @Transient
@@ -59,6 +61,7 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
     @Override
     public String toString() {
         return "Id: " + id +
+                " Gen: " + generationNumber +
                 " Route: " + genotype.toString() +
                 " Length: " + fitnessValue;
     }

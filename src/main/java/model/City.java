@@ -2,6 +2,7 @@ package model;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity(name = "cities")
+@NoArgsConstructor
 public class City implements Gene {
 
     @Id
