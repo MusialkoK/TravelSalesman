@@ -5,7 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +24,7 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
     private Phenotype phenotype;
 
     @Id
-    //@GeneratedValue
+
     private long id;
 
 
@@ -63,11 +66,26 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
         return "Id: " + id +
                 " Gen: " + generationNumber +
                 " Route: " + genotype.toString() +
-                " Length: " + fitnessValue;
+                " Length: " + fitnessValue +
+                getParentsNames();
+    }
+
+    private String getParentsNames(){
+        if(parents.isEmpty()){
+            return " Parents ids: NONE";
+        }else{
+            return " Parents ids: " + parents.get(0).getId() + " & " + parents.get(1).getId();
+        }
     }
 
     @Override
     public int compareTo(TravelSalesman o) {
         return this.fitnessValue.compareTo(o.fitnessValue);
+    }
+
+    public TravelSalesman setParents(Mutable parent1, Mutable parent2) {
+        this.parents.add((TravelSalesman) parent1);
+        this.parents.add((TravelSalesman) parent2);
+        return this;
     }
 }

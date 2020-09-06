@@ -6,7 +6,10 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity(name = "distances")
 @Accessors(chain = true)
@@ -17,7 +20,6 @@ import javax.persistence.*;
 public class CityDistance {
 
     @Id
-//    @GeneratedValue
     private Long distanceId;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -25,23 +25,11 @@ public class City implements Gene {
     @Column
     private String name;
 
-    @OneToOne(mappedBy = "originCity")
-    private CityDistance originCity;
-
-    @OneToOne(mappedBy = "destinationCity")
-    private CityDistance destinationCity;
-
     @Transient
     private Map<City, Double> distancesMap = new HashMap<>();
 
     public City(String name) {
         this.name = name;
-    }
-
-    public City assignDistances(City city, double distance) {
-        this.distancesMap.put(city, distance);
-        city.distancesMap.put(this, distance);
-        return this;
     }
 
     @Override

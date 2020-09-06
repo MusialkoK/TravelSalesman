@@ -20,24 +20,6 @@ public class CityDistanceService {
 
     private static List<CityDistance> distanceList = new ArrayList<>();
 
-    public void putDistanceToDB(City origin, City destination, double distance) {
-
-        CityDistance cityDistance = new CityDistance()
-                .setOriginCity(origin)
-                .setDestinationCity(destination)
-                .setDistance(distance);
-
-        CityDistance cityDistance2 = new CityDistance()
-                .setOriginCity(destination)
-                .setDestinationCity(origin)
-                .setDistance(distance);
-
-        Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(cityDistance);
-        session.saveOrUpdate(cityDistance2);
-        transaction.commit();
-    }
-
     public void putDistanceToDB(List<CityDistance> list){
         Transaction transaction = session.beginTransaction();
         list.forEach(session::saveOrUpdate);
@@ -46,13 +28,6 @@ public class CityDistanceService {
 
     public Double getDistanceBetween(City origin, City destination) {
         return origin.getDistancesMap().get(destination);
-    }
-
-    public CityDistance getDistanceFromDB(City origin, City destination) {
-        List<CityDistance> result = distanceList.stream()
-                .filter(distance -> distance.getOriginCity() == origin && distance.getDestinationCity() == destination)
-                .collect(Collectors.toList());
-        return result.get(0);
     }
 
     public void assignDistancesToCities() {

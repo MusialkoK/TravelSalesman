@@ -1,8 +1,6 @@
 package model;
 
 import lombok.Getter;
-import lombok.Setter;
-import services.TravelSalesmanService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +13,8 @@ public class TwoRandoms {
     private int secondRandom;
     private List<Integer> numbers = new ArrayList<>();
     @Getter
-    private boolean zero;
-    private int range;
+    private final boolean zero;
+    private final int range;
 
 
     public TwoRandoms(int range, boolean zero) {
@@ -24,7 +22,6 @@ public class TwoRandoms {
         this.zero = zero;
         initiate();
     }
-
 
     public void reset() {
         this.numbers = new ArrayList<>(range);

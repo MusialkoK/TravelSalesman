@@ -24,22 +24,20 @@ public class TravelSalesmanService {
 
     @Getter
     @Setter
-    private static int generationAbundance = 20;
+    private static int generationAbundance = 10000;
     @Getter
     @Setter
-    private static int numberOfReproducers = 4;
+    private static int numberOfReproducers = 100;
     @Getter
     @Setter
-    private static int numberOfGenerations = 20;
+    private static int numberOfGenerations = 100;
     @Getter
     @Setter
-    private static double mutatingChance = 0.05;
+    private static double mutatingChance = 0.2;
     @Setter
     private CrossingStrategy crossingStrategy;
     @Setter
     private MutatingStrategy mutatingStrategy;
-
-
 
     private int generationCounter = 0;
     private int individualCounter = 0;
@@ -48,6 +46,7 @@ public class TravelSalesmanService {
     @Setter
     private List<TravelSalesman> currentGeneration;
     private boolean addToDB=false;
+    private boolean displayIndividual = true;
 
 
     public List<TravelSalesman> createFirstGeneration() {
@@ -119,13 +118,13 @@ public class TravelSalesmanService {
 
         setCrossingStrategy(new TakeHalfFillRestStrategy(currentGeneration.get(0)));
         consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
-        consoleService.displayTravelersList(currentGeneration);
+        if(displayIndividual) consoleService.displayTravelersList(currentGeneration);
 
         for (int i = 0; i < numberOfGenerations-1; i++) {
             currentGeneration=killWeakTravelers(currentGeneration);
             currentGeneration=createNextGeneration(currentGeneration);
             consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
-            consoleService.displayTravelersList(currentGeneration);
+            if(displayIndividual) consoleService.displayTravelersList(currentGeneration);
         }
     }
 
