@@ -13,4 +13,6 @@ public interface Mutable {
     void calculateFitnessValue();
 
     Comparable getFitnessValue();
+
+    void gotMutated();
 }

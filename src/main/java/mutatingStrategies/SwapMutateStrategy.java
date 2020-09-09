@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.Random;
 
 public class SwapMutateStrategy implements MutatingStrategy {
-    private List<Gene> genotype;
 
     @Override
     public void mutate(Mutable obj) {
-        this.genotype = obj.getGenotype();
+        List<Gene> genotype = obj.getGenotype();
         TwoRandoms twoRandoms = new TwoRandoms(genotype.size(), false);
         Random random = new Random();
         double mutationRate = random.nextDouble();
@@ -23,6 +22,7 @@ public class SwapMutateStrategy implements MutatingStrategy {
             int mutateInto = twoRandoms.getSecondRandom();
             Collections.swap(genotype, mutateFrom, mutateInto);
             twoRandoms.reset();
+            obj.gotMutated();
         }
         obj.calculateFitnessValue();
     }

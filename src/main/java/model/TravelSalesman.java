@@ -37,17 +37,20 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
 
     private Double fitnessValue;
 
+    boolean mutated = false;
+
     public TravelSalesman(List<Gene> genotype) {
         this.genotype = genotype.stream().map(g -> (City) g).collect(Collectors.toList());
         phenotype = new MinimumPhenotype().setGenotype(this.genotype);
     }
 
     @Override
-    public void calculateFitnessValue(){
+    public void calculateFitnessValue() {
         fitnessValue = (double) phenotype.fitness();
     }
+
     @Override
-    public Double getFitnessValue(){
+    public Double getFitnessValue() {
         return fitnessValue;
     }
 
@@ -73,13 +76,19 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
                 " Gen: " + generationNumber +
                 " Route: " + genotype.toString() +
                 " Length: " + fitnessValue +
+                " Mutated: " + mutated +
                 getParentsNames();
     }
 
-    private String getParentsNames(){
-        if(parents.isEmpty()){
+    @Override
+    public void gotMutated() {
+        this.mutated = true;
+    }
+
+    private String getParentsNames() {
+        if (parents.isEmpty()) {
             return " Parents ids: NONE";
-        }else{
+        } else {
             return " Parents ids: " + parents.get(0).getId() + " & " + parents.get(1).getId();
         }
     }
