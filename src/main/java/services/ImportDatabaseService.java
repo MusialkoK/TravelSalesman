@@ -3,7 +3,6 @@ package services;
 import model.City;
 import model.CityDistance;
 
-import javax.print.DocFlavor;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImportDatabaseService {
+public class ImportDatabaseService implements ImportService{
 
     List<City> listOfCities = new ArrayList<>();
     List<CityDistance> listOfDistances = new ArrayList<>();

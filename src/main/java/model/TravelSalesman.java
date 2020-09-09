@@ -24,9 +24,7 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
     private Phenotype phenotype;
 
     @Id
-
     private long id;
-
 
     @Setter
     private int generationNumber;
@@ -42,7 +40,15 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
     public TravelSalesman(List<Gene> genotype) {
         this.genotype = genotype.stream().map(g -> (City) g).collect(Collectors.toList());
         phenotype = new MinimumPhenotype().setGenotype(this.genotype);
+    }
+
+    @Override
+    public void calculateFitnessValue(){
         fitnessValue = (double) phenotype.fitness();
+    }
+    @Override
+    public Double getFitnessValue(){
+        return fitnessValue;
     }
 
     @Override

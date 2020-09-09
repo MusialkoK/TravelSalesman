@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 
 @Accessors(chain = true)
@@ -22,11 +22,7 @@ public class City implements Gene {
     @GeneratedValue
     private Long id;
 
-    @Column
     private String name;
-
-    @Transient
-    private Map<City, Double> distancesMap = new HashMap<>();
 
     public City(String name) {
         this.name = name;

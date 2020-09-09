@@ -13,7 +13,7 @@ public class SwapMutateStrategy implements MutatingStrategy {
     private List<Gene> genotype;
 
     @Override
-    public Mutable mutate(Mutable obj) {
+    public void mutate(Mutable obj) {
         this.genotype = obj.getGenotype();
         TwoRandoms twoRandoms = new TwoRandoms(genotype.size(), false);
         Random random = new Random();
@@ -24,7 +24,6 @@ public class SwapMutateStrategy implements MutatingStrategy {
             Collections.swap(genotype, mutateFrom, mutateInto);
             twoRandoms.reset();
         }
-
-        return obj.setGenotype(genotype);
+        obj.calculateFitnessValue();
     }
 }

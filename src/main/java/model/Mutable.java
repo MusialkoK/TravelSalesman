@@ -9,4 +9,8 @@ public interface Mutable {
     int getGenomeLength();
 
     Mutable setGenotype(List<Gene> genotype);
+
+    void calculateFitnessValue();
+
+    Comparable getFitnessValue();
 }

@@ -24,10 +24,10 @@ public class TravelSalesmanService {
 
     @Getter
     @Setter
-    private static int generationAbundance = 10000;
+    private static int generationAbundance = 5000;
     @Getter
     @Setter
-    private static int numberOfReproducers = 100;
+    private static int numberOfReproducers = 500;
     @Getter
     @Setter
     private static int numberOfGenerations = 100;
@@ -45,33 +45,37 @@ public class TravelSalesmanService {
     @Getter
     @Setter
     private List<TravelSalesman> currentGeneration;
-    private boolean addToDB=false;
+    private List<TravelSalesman> history;
+
+    private boolean addToDB = false;
     private boolean displayIndividual = true;
 
 
-    public List<TravelSalesman> createFirstGeneration() {
+    public void createFirstGeneration() {
         List<TravelSalesman> result = new ArrayList<>();
         for (int i = 0; i < generationAbundance; i++) {
-            result.add(new TravelSalesman(getIndividualGenome(CityService.getOperatingCityList(),CityService.getStartCity()))
+            TravelSalesman ts = new TravelSalesman(getIndividualGenome(CityService.getOperatingCityList(), CityService.getStartCity()))
                     .setGenerationNumber(generationCounter)
-                    .setId(individualCounter++));
+                    .setId(individualCounter++);
+            ts.calculateFitnessValue();
+            result.add(ts);
         }
-        saveTravelSalesmenListToDB(result);
-        return result;
+        currentGeneration = result;
+        history = result;
     }
 
-    public List<TravelSalesman> killWeakTravelers(List<TravelSalesman> list) {
-        Collections.sort(list);
-        return list.stream().limit(numberOfReproducers).collect(Collectors.toList());
+    public void killWeakTravelers() {
+        Collections.sort(currentGeneration);
+        currentGeneration = currentGeneration.stream().limit(numberOfReproducers).collect(Collectors.toList());
     }
 
-    public List<TravelSalesman> createNextGeneration(List<TravelSalesman> breeders) {
-        TwoRandoms twoRandoms = new TwoRandoms(numberOfReproducers,true);
+    public void createNextGeneration() {
+        TwoRandoms twoRandoms = new TwoRandoms(numberOfReproducers, true);
         generationCounter++;
         List<TravelSalesman> offspring = new ArrayList<>();
-        for (int i = 0; i < generationAbundance-numberOfReproducers; i++) {
-            TravelSalesman parent1 = breeders.get(twoRandoms.getFirstRandom());
-            TravelSalesman parent2 = breeders.get(twoRandoms.getSecondRandom());
+        for (int i = 0; i < generationAbundance - numberOfReproducers; i++) {
+            TravelSalesman parent1 = currentGeneration.get(twoRandoms.getFirstRandom());
+            TravelSalesman parent2 = currentGeneration.get(twoRandoms.getSecondRandom());
             twoRandoms.reset();
             TravelSalesman child = (TravelSalesman) crossingStrategy.cross(parent1, parent2);
             mutatingStrategy.mutate(child);
@@ -79,14 +83,12 @@ public class TravelSalesmanService {
                     .setId(individualCounter++);
             offspring.add(child);
         }
-        saveTravelSalesmenListToDB(offspring);
-        List<TravelSalesman> newGeneration = new ArrayList<>(breeders);
-        newGeneration.addAll(offspring);
-        return newGeneration;
+        history.addAll(offspring);
+        currentGeneration.addAll(offspring);
     }
 
-    public void saveTravelSalesmenListToDB(List<TravelSalesman> travelSalesmanList){
-        if(addToDB){
+    public void saveTravelSalesmenListToDB(List<TravelSalesman> travelSalesmanList) {
+        if (addToDB) {
             Transaction transaction = session.beginTransaction();
             travelSalesmanList.forEach(session::saveOrUpdate);
             transaction.commit();
@@ -102,7 +104,7 @@ public class TravelSalesmanService {
         return result;
     }
 
-    public void makeAnalysis(){
+    public void makeAnalysis() {
         CityService cityService = new CityService();
         CityDistanceService cityDistanceService = new CityDistanceService();
         ConsoleService consoleService = new ConsoleService();
@@ -111,24 +113,23 @@ public class TravelSalesmanService {
         CityService.setOperatingCityList(consoleService.askForOperatingCities());
         CityService.setStartCity(consoleService.askForStartCity());
         cityDistanceService.getCityDistances();
-        cityDistanceService.assignDistancesToCities();
         setMutatingStrategy(new SwapMutateStrategy());
 
-        currentGeneration = createFirstGeneration();
+        createFirstGeneration();
 
         setCrossingStrategy(new TakeHalfFillRestStrategy(currentGeneration.get(0)));
         consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
-        if(displayIndividual) consoleService.displayTravelersList(currentGeneration);
+        if (displayIndividual) consoleService.displayTravelersList(currentGeneration);
 
-        for (int i = 0; i < numberOfGenerations-1; i++) {
-            currentGeneration=killWeakTravelers(currentGeneration);
-            currentGeneration=createNextGeneration(currentGeneration);
+        for (int i = 0; i < numberOfGenerations - 1; i++) {
+            killWeakTravelers();
+            createNextGeneration();
             consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
-            if(displayIndividual) consoleService.displayTravelersList(currentGeneration);
+            if (displayIndividual) consoleService.displayTravelersList(currentGeneration);
         }
     }
 
-    private double getBestFitness(List<TravelSalesman> list){
+    private double getBestFitness(List<TravelSalesman> list) {
         return list.stream().mapToDouble(TravelSalesman::getFitnessValue).min().orElse(-1.0);
     }
 

@@ -3,10 +3,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import services.CityDistanceService;
-import services.CityService;
-import services.ImportDatabaseService;
-import services.TravelSalesmanService;
+import services.*;
 
 
 public class App {
@@ -38,7 +35,7 @@ public class App {
     public static void makeImport() {
 
         try {
-            ImportDatabaseService importDatabaseService = new ImportDatabaseService();
+            ImportService importDatabaseService = new ImportDatabaseServiceByKM();
             importDatabaseService.addCitiesFromFile();
         } catch (Exception e) {
             e.printStackTrace();

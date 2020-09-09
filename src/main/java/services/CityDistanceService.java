@@ -27,11 +27,12 @@ public class CityDistanceService {
     }
 
     public Double getDistanceBetween(City origin, City destination) {
-        return origin.getDistancesMap().get(destination);
-    }
-
-    public void assignDistancesToCities() {
-        CityService.getOperatingCityList().forEach(c -> c.setDistancesMap(distancesMapFrom(c)));
+        double distanceNotFoundValue = -10000000.0;
+        return distanceList.stream()
+                .filter(c->c.getOriginCity()==origin)
+                .filter(c->c.getDestinationCity()==destination)
+                .mapToDouble(CityDistance::getDistance)
+                .findFirst().orElse(distanceNotFoundValue);
     }
 
     public void getCityDistances() {

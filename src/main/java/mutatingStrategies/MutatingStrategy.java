@@ -4,5 +4,5 @@ import model.Mutable;
 
 public interface MutatingStrategy {
 
-    Mutable mutate(Mutable obj);
+    void mutate(Mutable obj);
 }
