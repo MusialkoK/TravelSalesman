@@ -12,6 +12,8 @@ import mutatingStrategies.MutatingStrategy;
 import mutatingStrategies.SwapMutateStrategy;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import parentSelectionStrategies.ParentSelectingStrategy;
+import parentSelectionStrategies.RouletteWheelSelection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,28 +29,36 @@ public class TravelSalesmanService {
     private static int generationAbundance = 5000;
     @Getter
     @Setter
-    private static int numberOfReproducers = 500;
+    private static int numberOfReproducers = 1500;
     @Getter
     @Setter
     private static int numberOfGenerations = 100;
     @Getter
     @Setter
-    private static double mutatingChance = 0.2;
+    private static double mutatingChance = 0.7;
     @Setter
     private CrossingStrategy crossingStrategy;
     @Setter
     private MutatingStrategy mutatingStrategy;
+    @Setter
+    private ParentSelectingStrategy parentSelectingStrategy;
 
     private int generationCounter = 0;
     private int individualCounter = 0;
 
     @Getter
     @Setter
-    private List<TravelSalesman> currentGeneration;
-    private List<TravelSalesman> history;
+    private static List<TravelSalesman> currentGeneration;
+    @Getter
+    private static List<TravelSalesman> history;
 
     private boolean addToDB = false;
-    private boolean displayIndividual = true;
+    private boolean displayIndividual = false;
+
+    CityService cityService = new CityService();
+    CityDistanceService cityDistanceService = new CityDistanceService();
+    ConsoleService consoleService = new ConsoleService();
+    StatisticalService statisticalService = new StatisticalService();
 
 
     public void createFirstGeneration() {
@@ -65,8 +75,9 @@ public class TravelSalesmanService {
     }
 
     public void killWeakTravelers() {
-        Collections.sort(currentGeneration);
-        currentGeneration = currentGeneration.stream().limit(numberOfReproducers).collect(Collectors.toList());
+        currentGeneration = parentSelectingStrategy.getBreeders().stream()
+                .map(br -> (TravelSalesman) br)
+                .collect(Collectors.toList());
     }
 
     public void createNextGeneration() {
@@ -105,9 +116,6 @@ public class TravelSalesmanService {
     }
 
     public void makeAnalysis() {
-        CityService cityService = new CityService();
-        CityDistanceService cityDistanceService = new CityDistanceService();
-        ConsoleService consoleService = new ConsoleService();
 
         cityService.setFullCityList();
         CityService.setOperatingCityList(consoleService.askForOperatingCities());
@@ -118,6 +126,7 @@ public class TravelSalesmanService {
         createFirstGeneration();
 
         setCrossingStrategy(new TakeHalfFillRestStrategy(currentGeneration.get(0)));
+        setParentSelectingStrategy(new RouletteWheelSelection());
         consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
         if (displayIndividual) consoleService.displayTravelersList(currentGeneration);
 
@@ -127,6 +136,12 @@ public class TravelSalesmanService {
             consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
             if (displayIndividual) consoleService.displayTravelersList(currentGeneration);
         }
+        System.out.println();
+    }
+
+    public void viewStatistics() {
+        consoleService.displayBestIndividual(statisticalService.getBestIndividual());
+
     }
 
     private double getBestFitness(List<TravelSalesman> list) {

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,9 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
     private Double fitnessValue;
 
     boolean mutated = false;
+
+    @Transient
+    BigDecimal breedProbability;
 
     public TravelSalesman(List<Gene> genotype) {
         this.genotype = genotype.stream().map(g -> (City) g).collect(Collectors.toList());

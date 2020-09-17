@@ -20,6 +20,7 @@ public class App {
             setUpServices(session);
 //            makeImport();
             travelSalesmanService.makeAnalysis();
+            travelSalesmanService.viewStatistics();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -30,6 +31,7 @@ public class App {
         CityDistanceService.setSession(session);
         CityService.setSession(session);
         TravelSalesmanService.setSession(session);
+
     }
 
     public static void makeImport() {

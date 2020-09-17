@@ -2,6 +2,7 @@ package services;
 
 
 import model.City;
+import model.Mutable;
 import model.TravelSalesman;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ public class ConsoleService {
     private final String CITY_LIST_FORMAT = "%d: %s\n";
 
     public List<City> askForOperatingCities() {
+        System.out.flush();
         List<City> genes = CityService.getFullCityList();
         Scanner sc = new Scanner(System.in);
         displayCityList(genes);
@@ -56,6 +58,10 @@ public class ConsoleService {
 
     public void generationCreatedMsg(int generationNumber, double bestFitness){
         System.out.println(generationNumber+". generation created. Shortest route: "+bestFitness);
+    }
+
+    public void displayBestIndividual(Mutable mutable){
+        System.out.println("Best result: \n" + mutable);
     }
 
 }
