@@ -24,7 +24,7 @@ class TakeHalfFillRestStrategyTest {
         List<Gene> genome3 = Arrays.asList(cityA, cityB, cityD, cityC);
         TravelSalesman travelSalesman1 = (TravelSalesman) new TravelSalesman().setGenotype(genome1);
         TravelSalesman travelSalesman2 = (TravelSalesman) new TravelSalesman().setGenotype(genome2);
-        TakeHalfFillRestStrategy takeHalfFillRestStrategy = new TakeHalfFillRestStrategy(travelSalesman1);
+        TakeHalfFillRestStrategy takeHalfFillRestStrategy = new TakeHalfFillRestStrategy();
 
         //when
         TravelSalesman travelSalesman3 = takeHalfFillRestStrategy.cross(travelSalesman1,travelSalesman2);

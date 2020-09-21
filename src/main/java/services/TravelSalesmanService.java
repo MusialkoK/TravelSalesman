@@ -125,7 +125,7 @@ public class TravelSalesmanService {
 
         createFirstGeneration();
 
-        setCrossingStrategy(new TakeHalfFillRestStrategy(currentGeneration.get(0)));
+        setCrossingStrategy(new TakeHalfFillRestStrategy());
         setParentSelectingStrategy(new RouletteWheelSelection());
         consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
         if (displayIndividual) consoleService.displayTravelersList(currentGeneration);

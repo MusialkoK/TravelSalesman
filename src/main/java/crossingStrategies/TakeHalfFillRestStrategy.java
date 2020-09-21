@@ -7,27 +7,22 @@ import model.TravelSalesman;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TakeHalfFillRestStrategy implements CrossingStrategy {
-    private List<Gene> parent1Genotype;
-    private List<Gene> parent2Genotype;
-    private final int lastGeneToTake;
-    private final int genotypeLength;
-
-    public TakeHalfFillRestStrategy(Mutable mutable) {
-        this.genotypeLength = mutable.getGenomeLength();
-        this.lastGeneToTake = genotypeLength / 2;
-    }
+public class TakeHalfFillRestStrategy extends AbstractCrossingStrategy {
+    private int lastGeneToTake;
 
     @Override
     public TravelSalesman cross(Mutable parent1, Mutable parent2) {
-        parent1Genotype = parent1.getGenotype();
-        parent2Genotype = parent2.getGenotype();
-
+        setParentsGenotype(parent1,parent2);
+        setLastGeneToTake(parent1);
         List<Gene> offspringGenotype = new ArrayList<>();
         parent1Genotype.stream().limit(lastGeneToTake).forEach(offspringGenotype::add);
         parent2Genotype.stream().filter(g->!offspringGenotype.contains(g)).forEach(offspringGenotype::add);
 
         return new TravelSalesman(offspringGenotype).setParents(parent1,parent2);
+    }
+
+    private void setLastGeneToTake(Mutable mutable){
+        if(lastGeneToTake==0) this.lastGeneToTake= mutable.getGenomeLength()/2;
     }
 
 }
