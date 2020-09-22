@@ -1,13 +1,13 @@
 package services;
 
-import crossingStrategies.CrossingStrategy;
+import crossingStrategies.AbstractCrossingStrategy;
 import crossingStrategies.TakeHalfFillRestStrategy;
 import lombok.Getter;
 import lombok.Setter;
 import model.City;
 import model.Gene;
+import model.Randoms;
 import model.TravelSalesman;
-import model.TwoRandoms;
 import mutatingStrategies.MutatingStrategy;
 import mutatingStrategies.SwapMutateStrategy;
 import org.hibernate.Session;
@@ -37,7 +37,7 @@ public class TravelSalesmanService {
     @Setter
     private static double mutatingChance = 0.7;
     @Setter
-    private CrossingStrategy crossingStrategy;
+    private AbstractCrossingStrategy crossingStrategy;
     @Setter
     private MutatingStrategy mutatingStrategy;
     @Setter
@@ -81,13 +81,12 @@ public class TravelSalesmanService {
     }
 
     public void createNextGeneration() {
-        TwoRandoms twoRandoms = new TwoRandoms(numberOfReproducers, true);
+        Randoms randoms = new Randoms(numberOfReproducers, true);
         generationCounter++;
         List<TravelSalesman> offspring = new ArrayList<>();
         for (int i = 0; i < generationAbundance - numberOfReproducers; i++) {
-            TravelSalesman parent1 = currentGeneration.get(twoRandoms.getFirstRandom());
-            TravelSalesman parent2 = currentGeneration.get(twoRandoms.getSecondRandom());
-            twoRandoms.reset();
+            TravelSalesman parent1 = currentGeneration.get(randoms.getRandom());
+            TravelSalesman parent2 = currentGeneration.get(randoms.getRandomAndReset());
             TravelSalesman child = (TravelSalesman) crossingStrategy.cross(parent1, parent2);
             mutatingStrategy.mutate(child);
             child.setGenerationNumber(generationCounter)
