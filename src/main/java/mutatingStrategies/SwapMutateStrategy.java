@@ -14,12 +14,12 @@ public class SwapMutateStrategy implements MutatingStrategy {
     @Override
     public void mutate(Mutable obj) {
         List<Gene> genotype = obj.getGenotype();
-        Randoms randoms = new Randoms(genotype.size(), false);
+        Randoms randoms = new Randoms(genotype.size(), 2,false);
         Random random = new Random();
         double mutationRate = random.nextDouble();
         if (mutationRate < TravelSalesmanService.getMutatingChance()) {
-            int mutateFrom = randoms.getRandom();
-            int mutateInto = randoms.getRandomAndReset();
+            int mutateFrom = randoms.draw();
+            int mutateInto = randoms.draw();
             Collections.swap(genotype, mutateFrom, mutateInto);
             obj.gotMutated();
         }

@@ -81,12 +81,12 @@ public class TravelSalesmanService {
     }
 
     public void createNextGeneration() {
-        Randoms randoms = new Randoms(numberOfReproducers, true);
+        Randoms randoms = new Randoms(numberOfReproducers, 2,true);
         generationCounter++;
         List<TravelSalesman> offspring = new ArrayList<>();
         for (int i = 0; i < generationAbundance - numberOfReproducers; i++) {
-            TravelSalesman parent1 = currentGeneration.get(randoms.getRandom());
-            TravelSalesman parent2 = currentGeneration.get(randoms.getRandomAndReset());
+            TravelSalesman parent1 = currentGeneration.get(randoms.draw());
+            TravelSalesman parent2 = currentGeneration.get(randoms.draw());
             TravelSalesman child = (TravelSalesman) crossingStrategy.cross(parent1, parent2);
             mutatingStrategy.mutate(child);
             child.setGenerationNumber(generationCounter)
