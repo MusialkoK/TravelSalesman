@@ -14,7 +14,7 @@ public class SwapMutateStrategy implements MutatingStrategy {
     @Override
     public void mutate(Mutable obj) {
         List<Gene> genotype = obj.getGenotype();
-        Randoms randoms = new Randoms(genotype.size(), 2,false);
+        Randoms randoms = new Randoms(genotype.size(), 2);
         Random random = new Random();
         double mutationRate = random.nextDouble();
         if (mutationRate < TravelSalesmanService.getMutatingChance()) {

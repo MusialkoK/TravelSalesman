@@ -81,7 +81,7 @@ public class TravelSalesmanService {
     }
 
     public void createNextGeneration() {
-        Randoms randoms = new Randoms(numberOfReproducers, 2,true);
+        Randoms randoms = new Randoms(numberOfReproducers, 2);
         generationCounter++;
         List<TravelSalesman> offspring = new ArrayList<>();
         for (int i = 0; i < generationAbundance - numberOfReproducers; i++) {

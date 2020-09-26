@@ -8,15 +8,23 @@ public class Randoms {
 
     private final int[] exportValues;
     private final List<Integer> numbers = new ArrayList<>();
-    private final boolean zero;
+    private final int startValue;
     private final int range;
     private int iterator = 0;
 
 
-    public Randoms(int range, int valuesToDraw, boolean zero) {
+    public Randoms(int range, int valuesToDraw) {
         exportValues = new int[valuesToDraw];
         this.range = range;
-        this.zero = zero;
+        this.startValue = 0;
+        setNumbers();
+        setExportValues();
+    }
+
+    public Randoms(int range, int valuesToDraw, int startValue) {
+        exportValues = new int[valuesToDraw];
+        this.range = range;
+        this.startValue = startValue;
         setNumbers();
         setExportValues();
     }
@@ -31,7 +39,6 @@ public class Randoms {
     }
 
     private void setNumbers() {
-        int startValue = zero ? 0 : 1;
         for (int i = startValue; i < range - startValue; i++) {
             numbers.add(i);
         }
