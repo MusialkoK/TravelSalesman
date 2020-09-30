@@ -18,9 +18,8 @@ public class SwapMutateStrategy implements MutatingStrategy {
         Random random = new Random();
         double mutationRate = random.nextDouble();
         if (mutationRate < TravelSalesmanService.getMutatingChance()) {
-            int mutateFrom = randoms.draw();
-            int mutateInto = randoms.draw();
-            Collections.swap(genotype, mutateFrom, mutateInto);
+            int[] mutateRange = randoms.getArray();
+            Collections.swap(genotype, mutateRange[0], mutateRange[1]);
             obj.gotMutated();
         }
         obj.calculateFitnessValue();

@@ -1,5 +1,7 @@
 package model;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,10 +10,11 @@ public class Randoms {
 
     private final int[] exportValues;
     private final List<Integer> numbers = new ArrayList<>();
+    @Getter
     private final int startValue;
+    @Getter
     private final int range;
     private int iterator = 0;
-
 
     public Randoms(int range, int valuesToDraw) {
         exportValues = new int[valuesToDraw];
@@ -38,9 +41,16 @@ public class Randoms {
         return result;
     }
 
+    public int[] getArray() {
+        int[] result;
+        result = exportValues;
+        setExportValues();
+        return result;
+    }
+
     private void setNumbers() {
-        for (int i = startValue; i < range - startValue; i++) {
-            numbers.add(i);
+        for (int i = 0; i < range; i++) {
+            numbers.add(i+startValue);
         }
     }
 

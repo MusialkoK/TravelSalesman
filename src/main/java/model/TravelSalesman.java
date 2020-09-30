@@ -38,10 +38,13 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
 
     private Double fitnessValue;
 
-    boolean mutated = false;
+    private boolean mutated = false;
 
     @Transient
-    BigDecimal breedProbability;
+    private BigDecimal breedProbability;
+
+    @Transient
+    private List<TravelSalesman> geneOrigin = new ArrayList<>();
 
     public TravelSalesman(List<Gene> genotype) {
         this.genotype = genotype.stream().map(g -> (City) g).collect(Collectors.toList());
@@ -78,7 +81,7 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
     public String toString() {
         return "Id: " + id +
                 " Gen: " + generationNumber +
-                " Route: " + genotype.toString() +
+                " Route: " + genotypePrint() +
                 " Length: " + fitnessValue +
                 " Mutated: " + mutated +
                 getParentsNames();
@@ -106,5 +109,33 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
         this.parents.add((TravelSalesman) parent1);
         this.parents.add((TravelSalesman) parent2);
         return this;
+    }
+
+    private String genotypePrint() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < genotype.size(); i++) {
+            sb.append(genePrint(i));
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.deleteCharAt(sb.length()-1);
+        return sb.toString();
+    }
+
+    private String genePrint(int index) {
+        if (parents.isEmpty()) {
+            return genotype.get(index).toString()+", ";
+        } else {
+            return geneOrigin.get(index) == parents.get(0) ?
+                    parent1Color(genotype.get(index).toString()) + ", " : parent2Color(genotype.get(index).toString()) + ", ";
+        }
+
+    }
+
+    private String parent1Color(String text) {
+        return "\u001B[33m" + text + "\u001B[0m";
+    }
+
+    private String parent2Color(String text) {
+        return "\u001B[34m" + text + "\u001B[0m";
     }
 }

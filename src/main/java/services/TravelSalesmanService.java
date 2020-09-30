@@ -1,7 +1,7 @@
 package services;
 
 import crossingStrategies.AbstractCrossingStrategy;
-import crossingStrategies.TakeHalfFillRestStrategy;
+import crossingStrategies.OX1CrossingStrategy;
 import lombok.Getter;
 import lombok.Setter;
 import model.City;
@@ -26,10 +26,10 @@ public class TravelSalesmanService {
 
     @Getter
     @Setter
-    private static int generationAbundance = 5000;
+    private static int generationAbundance = 10000;
     @Getter
     @Setter
-    private static int numberOfReproducers = 1500;
+    private static int numberOfReproducers = (int) (0.4*generationAbundance);
     @Getter
     @Setter
     private static int numberOfGenerations = 100;
@@ -124,7 +124,9 @@ public class TravelSalesmanService {
 
         createFirstGeneration();
 
-        setCrossingStrategy(new TakeHalfFillRestStrategy());
+//        setCrossingStrategy(new TakeHalfFillRestStrategy());
+        setCrossingStrategy(new OX1CrossingStrategy());
+
         setParentSelectingStrategy(new RouletteWheelSelection());
         consoleService.generationCreatedMsg(generationCounter, getBestFitness(currentGeneration));
         if (displayIndividual) consoleService.displayTravelersList(currentGeneration);

@@ -63,5 +63,4 @@ public class ConsoleService {
     public void displayBestIndividual(Mutable mutable){
         System.out.println("Best result: \n" + mutable);
     }
-
 }
