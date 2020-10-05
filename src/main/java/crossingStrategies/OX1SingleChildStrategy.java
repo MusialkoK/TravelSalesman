@@ -5,19 +5,16 @@ import model.Mutable;
 import model.Randoms;
 import model.TravelSalesman;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class OX1CrossingStrategy extends AbstractCrossingStrategy {
+public class OX1SingleChildStrategy extends AbstractCrossingStrategy{
     private Gene[] childGenotypeArray;
     private Set<Gene> childGenotypeContent = new HashSet<>();
     private Mutable[] geneOriginArray;
 
     @Override
-    public Mutable cross(Mutable parent1, Mutable parent2) {
+    public List<Mutable> createOffspring(Mutable parent1, Mutable parent2) {
         setParentsGenotype(parent1, parent2);
         childGenotypeArray = new Gene[parent1Genotype.size()];
         geneOriginArray = new Mutable[parent1Genotype.size()];
@@ -49,13 +46,16 @@ public class OX1CrossingStrategy extends AbstractCrossingStrategy {
                 parentIterator = assertGenotypeBoundaries(++parentIterator);
             } while (childIterator != split[0]);
 
-            TravelSalesman result = new TravelSalesman(List.of(childGenotypeArray))
+            TravelSalesman ts = new TravelSalesman(List.of(childGenotypeArray))
                     .setParents(parent1, parent2)
                     .setGeneOrigin(List.of(geneOriginArray).stream().map(m->(TravelSalesman) m).collect(Collectors.toList()));
 
             Arrays.fill(childGenotypeArray, null);
             Arrays.fill(geneOriginArray, null);
             childGenotypeContent.clear();
+
+            List<Mutable> result = new ArrayList<>();
+            result.add(ts);
 
             return result;
 

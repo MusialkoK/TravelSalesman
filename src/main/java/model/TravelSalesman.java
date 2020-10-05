@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity(name = "travelers")
@@ -137,5 +138,18 @@ public class TravelSalesman implements Mutable, Comparable<TravelSalesman> {
 
     private String parent2Color(String text) {
         return "\u001B[34m" + text + "\u001B[0m";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TravelSalesman that = (TravelSalesman) o;
+        return genotype.equals(that.genotype);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genotype);
     }
 }

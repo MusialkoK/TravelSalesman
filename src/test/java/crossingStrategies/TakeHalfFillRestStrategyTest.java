@@ -27,7 +27,7 @@ class TakeHalfFillRestStrategyTest {
         TakeHalfFillRestStrategy takeHalfFillRestStrategy = new TakeHalfFillRestStrategy();
 
         //when
-        TravelSalesman travelSalesman3 = takeHalfFillRestStrategy.cross(travelSalesman1,travelSalesman2);
+        TravelSalesman travelSalesman3 = (TravelSalesman) takeHalfFillRestStrategy.createOffspring(travelSalesman1,travelSalesman2).get(0);
 
         //then
         assertEquals(travelSalesman3.getGenotype(),genome3);

@@ -5,11 +5,13 @@ import model.Mutable;
 
 import java.util.List;
 
-public abstract class AbstractCrossingStrategy implements CrossingStrategy{
+public abstract class AbstractCrossingStrategy{
     protected List<Gene> parent1Genotype;
     protected List<Gene> parent2Genotype;
     protected int genomeLength;
 
+
+    public abstract List<Mutable> createOffspring(Mutable parent1, Mutable parent2);
 
     protected void setParentsGenotype(Mutable parent1, Mutable parent2){
         this.parent1Genotype = parent1.getGenotype();
