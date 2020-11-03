@@ -124,7 +124,6 @@ public class TravelSalesmanService {
 
         createFirstGeneration();
 
-//        setCrossingStrategy(new TakeHalfFillRestStrategy());
         setCrossingStrategy(new OX1SingleChildStrategy());
 
         setParentSelectingStrategy(new RouletteWheelSelection());
